@@ -60,24 +60,34 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
-
+  // 导入excel页面
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true, // 隐藏在左侧菜单中
+    children: [{
+      path: '',
+      component: () => import('@/views/import')
+    }]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 动态路由
 export const asyncRoutes = [
-  approvalsRouter,
   departmentsRouter,
   employeesRouter,
+  settingRouter,
   permissionRouter,
+  socialRouter,
   attendancesRouter,
   salarysRouter,
-  settingRouter,
-  socialRouter
+  approvalsRouter
+
 ]
 
 const createRouter = () => new Router({

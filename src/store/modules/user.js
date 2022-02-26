@@ -25,7 +25,7 @@ const mutations = {
     state.userInfo = { ...userInfo } // 用 浅拷贝的方式去赋值对象 因为这样数据更新之后，才会触发组件的更新
   },
   // 删除用户信息
-  reomveUserInfo(state) {
+  removeUserInfo(state) {
     state.userInfo = {}
   }
 }
