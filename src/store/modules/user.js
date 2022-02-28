@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-
+import { resetRouter } from '@/router'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 // 状态
@@ -49,8 +49,8 @@ const actions = {
     const baseResult = { ...result, ...baseInfo } // 将两个接口结果合并
     // 此时已经获取到了用户的基本资料 迫不得已 为了头像再次调用一个接口
     context.commit('setUserInfo', baseResult) // 提交mutations
-    // 加一个点睛之笔  这里这一步，暂时用不到，但是请注意，这给我们后边会留下伏笔
-    return baseResult
+
+    return baseResult // 返回结果让路由守卫获取用户的访问权限menu
   },
 
   // 登出的action
@@ -59,6 +59,10 @@ const actions = {
     context.commit('removeToken') // 不仅仅删除了vuex中的 还删除了缓存中的
     // 删除用户资料
     context.commit('removeUserInfo') // 删除用户信息
+    // 重置路由
+    resetRouter()
+    // 在这个子模块调用permission子模块的mutation方法
+    context.commit('permission/setRoutes', [], { root: true })
   }
 }
 export default {

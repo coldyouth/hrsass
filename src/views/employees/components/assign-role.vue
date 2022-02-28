@@ -4,7 +4,7 @@
     <!-- 分配角色 -->
     <el-checkbox-group v-model="roleIds">
       <el-checkbox v-for="item in list" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
-    </el-checkbox-group>>
+    </el-checkbox-group>
     <el-row slot="footer" type="flex" justify="center">
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOK">确定</el-button>

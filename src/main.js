@@ -19,6 +19,7 @@ import '@/permission' // permission control
 import * as directives from '@/directives'
 import * as filters from '@/filters'
 import Components from '@/components'
+import checkPermission from './mixin/checkPermission'
 
 // 挂载所有的自定义全局组件
 Vue.use(Components)
@@ -44,6 +45,9 @@ Object.keys(directives).forEach(key => {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+// 全局混入
+Vue.mixin(checkPermission)
 
 new Vue({
   el: '#app',

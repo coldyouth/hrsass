@@ -10,17 +10,23 @@ router.beforeEach(async function (to, from, next) {
   NProgress.start() // 开启进度条
   //  首先判断有无token
   if (store.getters.token) {
-    //   如果有token 继续判断是不是去登录页
+    //   如果有token 继续判断是不是去登录页>表示去的是登录页> 跳到主页
     if (to.path === '/login') {
-      //  表示去的是登录页
-      next('/') // 跳到主页
+      next('/')
     } else {
       if (!store.getters.userId) {
         // 如果没有id这个值 才会调用 vuex的获取资料的action
-        await store.dispatch('user/getUserInfo')
-        // 为什么要写await 因为我们想获取完资料再去放行
+        const { roles } = await store.dispatch('user/getUserInfo')
+        console.log('权限菜单', roles.menus)
+
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        console.log('权限列表', routes)
+        // 404重定向页面必须放在最后面
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        next(to.path)
+      } else {
+        next() // 直接放行
       }
-      next() // 直接放行
     }
   } else {
     // 如果没有token
