@@ -7,7 +7,12 @@
           <el-tab-pane label="角色管理">
             <!-- 新增角色按钮 -->
             <el-row style="height:60px">
-              <el-button icon="el-icon-plus" size="small" type="primary">新增角色</el-button>
+              <el-button
+                icon="el-icon-plus"
+                size="small"
+                type="primary"
+                @click="showDialog = true"
+              >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
             <el-table border :data="list">
@@ -117,7 +122,8 @@ import {
   deleteRole,
   getRoleDetail,
   updateRole,
-  assignPerm
+  assignPerm,
+  addRole
 } from '@/api/setting'
 import { mapGetters } from 'vuex'
 import { transListToTreeData } from '@/utils'
@@ -200,6 +206,7 @@ export default {
           await updateRole(this.roleForm)
         } else {
           // 新增业务
+          await addRole(this.roleForm)
         }
         // 重新拉取数据
         this.getRoleList()
@@ -219,7 +226,6 @@ export default {
       this.$refs.roleForm.resetFields()
       this.showDialog = false
     },
-    // 点击分配权限
     // 获取权限点数据 在点击的时候调用 获取权限点数据
     async assignPerm(id) {
       this.permData = transListToTreeData(await getPermissionList(), '0') // 转化list到树形数据
@@ -230,6 +236,7 @@ export default {
       this.selectCheck = permIds // 将当前角色所拥有的权限id赋值
       this.showPermDialog = true
     },
+    // 点击分配权限
     async btnPermOK() {
       // 调用el-tree的方法
       // console.log(this.$refs.permTree.getCheckedKeys())
@@ -240,6 +247,7 @@ export default {
       this.$message.success('分配权限成功')
       this.showPermDialog = false
     },
+    // 取消分配权限
     btnPermCancel() {
       this.selectCheck = [] // 重置数据
       this.showPermDialog = false
